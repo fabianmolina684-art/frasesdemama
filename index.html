@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -306,42 +307,6 @@
       to   { opacity: 1; transform: none; }
     }
 
-    /* Projection */
-    body.proj {
-      background: #0c0a0e !important;
-    }
-    body.proj::before { display: none; }
-    body.proj main { max-width: 920px; padding-top: 40px; }
-    body.proj .nonproj { display: none !important; }
-    body.proj #cloudCard {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-    }
-    body.proj #cloud {
-      min-height: 70vh;
-      gap: 18px 24px;
-    }
-    body.proj #cloud span {
-      font-size: clamp(1.5rem, 4.2vw, 3rem) !important;
-    }
-
-    #exitProj {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 50;
-      background: rgba(255,255,255,.14);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,.28);
-      padding: 12px 28px;
-      font-weight: 700;
-      border-radius: 999px;
-      backdrop-filter: blur(10px);
-    }
-
     /* Color themes applied via data-theme on body */
     body[data-theme="0"]  { --accent:#e11d74; --accent2:#db2777; --bg1:#fff5f8; --bg2:#ffe4ef; --accent-soft:#fce7f0; --glow:rgba(225,29,116,.38); --shadow:0 12px 40px -12px rgba(190,24,93,.25); }
     body[data-theme="1"]  { --accent:#7c3aed; --accent2:#8b5cf6; --bg1:#f8f5ff; --bg2:#ede9fe; --accent-soft:#ede9fe; --glow:rgba(124,58,237,.35); --shadow:0 12px 40px -12px rgba(124,58,237,.22); }
@@ -405,13 +370,10 @@
     </div>
     <div id="cloud"></div>
     <div id="adminTools" class="hidden nonproj">
-      <button class="ghost" onclick="setProj(true)">📽 Modo proyección</button>
       <button id="clearBtn" class="ghost" onclick="clearAll()">🔄 Reiniciar la nube</button>
     </div>
     <button class="ghost nonproj" onclick="startGame()">Volver a jugar</button>
   </section>
-
-  <button id="exitProj" class="hidden" onclick="setProj(false)">Salir de proyección</button>
 </main>
 
 <script>
@@ -450,7 +412,7 @@ const KIND = { c: "Completá la frase", g: "¿Qué significaba?", s: "Situación
 const API = "/api/words";
 const PAL = ["#e11d74","#7c3aed","#0891b2","#ea580c","#059669","#db2777","#4f46e5","#c026d3","#0d9488","#d97706"];
 
-let i = 0, s = 0, done = false, words = [], prevKey = "", isOwner = false, proj = false;
+let i = 0, s = 0, done = false, words = [], prevKey = "", isOwner = false;
 
 const $ = id => document.getElementById(id);
 
@@ -602,13 +564,6 @@ async function sendWord() {
 $("word").addEventListener("keydown", e => {
   if (e.key === "Enter") sendWord();
 });
-
-function setProj(on) {
-  proj = on;
-  document.body.classList.toggle("proj", on);
-  $("exitProj").classList.toggle("hidden", !on);
-  if (on) show("cloudCard");
-}
 
 let clr = false, clrT = null;
 async function clearAll() {
