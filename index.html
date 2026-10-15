@@ -318,6 +318,29 @@
     body.proyectar .kind { display: none !important; }
     body.proyectar .ghost { display: none !important; }
 
+    /* Botón de pantalla completa */
+    #fsBtn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+      background: rgba(225, 29, 116, 0.9);
+      color: #fff;
+      border: none;
+      padding: 14px 22px;
+      font-weight: 700;
+      border-radius: 999px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px -6px rgba(225, 29, 116, 0.6);
+      display: none;
+      transition: transform .15s ease, background .2s ease;
+    }
+    #fsBtn:hover { background: rgba(225, 29, 116, 1); }
+    #fsBtn:active { transform: scale(.96); }
+
+    body.proyectar #fsBtn { display: block; }
+
     body[data-theme="0"]  { --accent:#e11d74; --accent2:#db2777; --bg1:#fff5f8; --bg2:#ffe4ef; --accent-soft:#fce7f0; --glow:rgba(225,29,116,.38); --shadow:0 12px 40px -12px rgba(190,24,93,.25); }
     body[data-theme="1"]  { --accent:#7c3aed; --accent2:#8b5cf6; --bg1:#f8f5ff; --bg2:#ede9fe; --accent-soft:#ede9fe; --glow:rgba(124,58,237,.35); --shadow:0 12px 40px -12px rgba(124,58,237,.22); }
     body[data-theme="2"]  { --accent:#0891b2; --accent2:#06b6d4; --bg1:#f0fdfa; --bg2:#cffafe; --accent-soft:#cffafe; --glow:rgba(8,145,178,.35); --shadow:0 12px 40px -12px rgba(8,145,178,.22); }
@@ -379,6 +402,8 @@
     </div>
     <button class="ghost" onclick="startGame()">Volver a jugar</button>
   </section>
+
+  <button id="fsBtn" onclick="toggleFullscreen()">⛶ Pantalla completa</button>
 </main>
 
 <script>
@@ -597,31 +622,25 @@ async function clearAll() {
   }
 }
 
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  const btn = $("fsBtn");
+  if (!btn) return;
+  if (document.fullscreenElement) {
+    btn.textContent = "✕ Salir (o apretá ESC)";
+  } else {
+    btn.textContent = "⛶ Pantalla completa";
+  }
+});
+
 function enterAdmin() {
   if (location.hash !== "#admin") return;
   isOwner = true;
-  $("adminBtn").classList.remove("hidden");
-  $("adminTools").classList.remove("hidden");
-  showCloud();
-}
-
-function enterProyectar() {
-  if (location.hash !== "#proyectar") {
-    document.body.classList.remove("proyectar");
-    return;
-  }
-  document.body.classList.add("proyectar");
-  show("cloudCard");
-  loadWords();
-}
-
-addEventListener("hashchange", enterAdmin);
-addEventListener("hashchange", enterProyectar);
-
-enterAdmin();
-enterProyectar();
-
-setInterval(loadWords, 3000);
-</script>
-</body>
-</html>
+ 
