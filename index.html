@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -307,6 +306,35 @@
       to   { opacity: 1; transform: none; }
     }
 
+    /* Modo proyectar: solo la nube */
+    body.proyectar {
+      background: #fff5f8 !important;
+    }
+    body.proyectar::before { display: none; }
+    body.proyectar main {
+      max-width: 100%;
+      padding: 40px 30px;
+    }
+    body.proyectar .card { display: none !important; }
+    body.proyectar #cloudCard {
+      display: block !important;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+    }
+    body.proyectar #cloud {
+      min-height: 80vh;
+      gap: 20px 28px;
+      padding: 20px;
+    }
+    body.proyectar #cloud span {
+      font-size: clamp(2rem, 5vw, 4rem) !important;
+    }
+    body.proyectar .kind { display: none !important; }
+    body.proyectar .ghost { display: none !important; }
+
     /* Color themes applied via data-theme on body */
     body[data-theme="0"]  { --accent:#e11d74; --accent2:#db2777; --bg1:#fff5f8; --bg2:#ffe4ef; --accent-soft:#fce7f0; --glow:rgba(225,29,116,.38); --shadow:0 12px 40px -12px rgba(190,24,93,.25); }
     body[data-theme="1"]  { --accent:#7c3aed; --accent2:#8b5cf6; --bg1:#f8f5ff; --bg2:#ede9fe; --accent-soft:#ede9fe; --glow:rgba(124,58,237,.35); --shadow:0 12px 40px -12px rgba(124,58,237,.22); }
@@ -601,9 +629,15 @@ function enterAdmin() {
   showCloud();
 }
 
+function enterProyectar() {
+  if (location.hash !== "#proyectar") {
+    document.body.classList.remove("proyectar");
+    return;
+  }
+  document.body.classList.add("proyectar");
+  show("cloudCard");
+  loadWords();
+}
+
 addEventListener("hashchange", enterAdmin);
-enterAdmin();
-setInterval(loadWords, 3000);
-</script>
-</body>
-</html>
+addEventListener("hashchange
